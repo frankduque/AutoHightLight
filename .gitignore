@@ -23,6 +23,11 @@ wheels/
 .installed.cfg
 *.egg
 
+# Documentation (exceto README)
+docs/
+*.md
+!README.md
+
 # Environment
 .env
 .env.local
