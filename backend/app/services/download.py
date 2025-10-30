@@ -47,10 +47,10 @@ def download_video_task(video_id: int):
     except Exception as e:
         logger.error(f"Erro no download do vídeo {video_id}: {e}")
         
-        # Atualiza com erro
+        # Atualiza com erro específico de download
         video = db.query(Video).filter(Video.id == video_id).first()
         if video:
-            video.status = VideoStatus.failed
+            video.status = VideoStatus.download_failed
             video.download_error = str(e)
             db.commit()
     

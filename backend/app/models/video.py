@@ -4,16 +4,46 @@ from app.db.database import Base
 import enum
 
 class VideoStatus(enum.Enum):
+    # Fase 1: Download
     pending = "pending"
     downloading = "downloading"
     downloaded = "downloaded"
+    download_failed = "download_failed"
+    
+    # Fase 2: Transcrição
     transcribing = "transcribing"
     transcribed = "transcribed"
+    transcription_failed = "transcription_failed"
+    
+    # Fase 3: Análise IA
     analyzing = "analyzing"
     analyzed = "analyzed"
+    analysis_failed = "analysis_failed"
+    
+    # Fase 4: Highlights
+    generating_highlights = "generating_highlights"
+    highlights_generated = "highlights_generated"
+    highlights_failed = "highlights_failed"
+    
+    # Fase 5: Corte
+    cutting = "cutting"
+    cut = "cut"
+    cutting_failed = "cutting_failed"
+    
+    # Fase 6: Ranking
+    ranking = "ranking"
     ranked = "ranked"
-    generating = "generating"
+    ranking_failed = "ranking_failed"
+    
+    # Fase 7: Legendas
+    generating_subtitles = "generating_subtitles"
+    subtitles_generated = "subtitles_generated"
+    subtitles_failed = "subtitles_failed"
+    
+    # Final
     completed = "completed"
+    
+    # Deprecated (manter por compatibilidade temporária)
     failed = "failed"
 
 class Video(Base):

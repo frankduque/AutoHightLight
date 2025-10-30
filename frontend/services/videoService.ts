@@ -4,7 +4,10 @@ import type { Video, VideoMetadata } from '@/types/video';
 export const videoService = {
   // Buscar metadata do YouTube
   async fetchMetadata(url: string): Promise<any> {
+    console.log('🔍 fetchMetadata chamado com URL:', url);
+    console.log('🌐 Fazendo POST para:', api.defaults.baseURL + '/videos/fetch-metadata');
     const { data } = await api.post('/videos/fetch-metadata', { url });
+    console.log('📦 Resposta recebida:', data);
     return data;
   },
 
@@ -48,6 +51,29 @@ export const videoService = {
   // Iniciar download
   async startDownload(id: number): Promise<void> {
     await api.post(`/videos/${id}/download`);
+  },
+
+  // Progresso do download
+  async getDownloadProgress(id: number): Promise<{ video_id: number; status: string; progress: number; error: string | null }> {
+    const { data } = await api.get(`/videos/${id}/download-progress`);
+    return data;
+  },
+
+  // Revisar download
+  async reviewDownload(id: number): Promise<Video> {
+    const { data } = await api.post(`/videos/${id}/review-download`);
+    return data;
+  },
+
+  // Reprocessar metadados
+  async refreshMetadata(id: number): Promise<Video> {
+    const { data } = await api.post(`/videos/${id}/refresh-metadata`);
+    return data;
+  },
+
+  // URL para streaming do vídeo
+  getStreamUrl(id: number): string {
+    return `${api.defaults.baseURL}/videos/${id}/stream`;
   },
 
   // Iniciar transcrição

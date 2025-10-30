@@ -60,6 +60,8 @@ class VideoResponse(BaseModel):
     comment_count: Optional[int] = 0
     status: VideoStatus
     download_progress: float
+    download_error: Optional[str] = None
+    download_reviewed_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
     
