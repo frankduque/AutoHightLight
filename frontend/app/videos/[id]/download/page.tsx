@@ -6,6 +6,7 @@ import { videoService } from '@/services/videoService';
 import { Button } from '@/components/ui/button';
 import { Download, CheckCircle2, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { ProgressBreadcrumb } from '@/components/ui/progress-breadcrumb';
 
 export default function DownloadPage() {
   const params = useParams();
@@ -87,40 +88,18 @@ export default function DownloadPage() {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb de Progresso */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {[
-          { num: 1, label: 'Download', active: true },
-          { num: 2, label: 'Transcrição', active: false },
-          { num: 3, label: 'Análise IA', active: false },
-          { num: 4, label: 'Highlights', active: false },
-          { num: 5, label: 'Corte', active: false },
-          { num: 6, label: 'Ranking', active: false },
-          { num: 7, label: 'Legendas', active: false }
-        ].map((step, index) => (
-          <div key={step.num} className="flex items-center gap-2">
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all ${
-              step.active 
-                ? 'bg-blue-100 border-2 border-blue-500' 
-                : 'bg-gray-100 border-2 border-gray-300 opacity-50'
-            }`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                step.active ? 'bg-blue-500 text-white' : 'bg-gray-400 text-white'
-              }`}>
-                {step.num}
-              </div>
-              <span className={`text-sm font-medium ${
-                step.active ? 'text-blue-900' : 'text-gray-600'
-              }`}>
-                {step.label}
-              </span>
-            </div>
-            {index < 6 && (
-              <div className="w-4 h-0.5 bg-gray-300" />
-            )}
-          </div>
-        ))}
-      </div>
+      <ProgressBreadcrumb 
+        currentStep={1}
+        steps={[
+          { label: 'Download' },
+          { label: 'Transcrição' },
+          { label: 'Análise IA' },
+          { label: 'Highlights' },
+          { label: 'Corte' },
+          { label: 'Ranking' },
+          { label: 'Legendas' },
+        ]}
+      />
 
       <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-6 text-white">
         <div className="flex items-center gap-3">

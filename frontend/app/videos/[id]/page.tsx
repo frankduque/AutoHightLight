@@ -20,22 +20,38 @@ export default function VideoRedirectPage() {
       
       console.log('🔍 Redirecionamento:', {
         status: video.status,
-        download_reviewed_at: video.download_reviewed_at
+        download_reviewed_at: video.download_reviewed_at,
+        audio_reviewed_at: video.audio_reviewed_at,
+        transcription_reviewed_at: video.transcription_reviewed_at
       });
       
-      // Redireciona para a fase atual baseado no status
-      // Inclui 'pending' e casos com erro de download para permitir retry
-      if (['pending', 'downloading', 'downloaded', 'download_failed'].includes(video.status) && !video.download_reviewed_at) {
+      // Redireciona para a fase atual baseado no status e revisões
+      
+      // Fase 1: Download
+      if (!video.download_reviewed_at) {
         console.log('✅ Redirecionando para /download');
         router.push(`/videos/${id}/download`);
-      } else if (video.download_reviewed_at) {
-        // Download foi revisado, redireciona para transcrição
-        console.log('✅ Redirecionando para /transcription');
-        router.push(`/videos/${id}/transcription`);
-      } else {
-        console.log('❌ Status não reconhecido, voltando para lista');
-        router.push('/videos');
+        return;
       }
+      
+      // Fase 2: Extração de Áudio
+      if (!video.audio_reviewed_at) {
+        console.log('✅ Redirecionando para /transcription/audio-extraction');
+        router.push(`/videos/${id}/transcription/audio-extraction`);
+        return;
+      }
+      
+      // Fase 3: Transcrição
+      if (!video.transcription_reviewed_at) {
+        console.log('✅ Redirecionando para /transcription/transcribe');
+        router.push(`/videos/${id}/transcription/transcribe`);
+        return;
+      }
+      
+      // Fase 4+: Análise IA (próxima fase a ser implementada)
+      console.log('✅ Redirecionando para /analysis');
+      router.push(`/videos/${id}/analysis`);
+      
     } catch (error) {
       console.error('❌ Erro ao buscar vídeo:', error);
       router.push('/videos');

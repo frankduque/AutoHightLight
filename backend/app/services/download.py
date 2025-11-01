@@ -52,6 +52,7 @@ def download_video_task(video_id: int):
         if video:
             video.status = VideoStatus.download_failed
             video.download_error = str(e)
+            video.download_progress = 0.0
             db.commit()
     
     finally:

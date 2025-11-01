@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.settings import settings
 from app.db.database import init_db
-from app.api import videos
+from app.api import videos_clean as videos, metadata, download, audio, transcription
 from loguru import logger
 import sys
 
@@ -31,6 +31,30 @@ app.include_router(
     videos.router,
     prefix=f"{settings.API_V1_STR}/videos",
     tags=["videos"]
+)
+
+app.include_router(
+    metadata.router,
+    prefix=f"{settings.API_V1_STR}/videos",
+    tags=["metadata"]
+)
+
+app.include_router(
+    download.router,
+    prefix=f"{settings.API_V1_STR}/videos",
+    tags=["download"]
+)
+
+app.include_router(
+    audio.router,
+    prefix=f"{settings.API_V1_STR}/videos",
+    tags=["audio"]
+)
+
+app.include_router(
+    transcription.router,
+    prefix=f"{settings.API_V1_STR}/videos",
+    tags=["transcription"]
 )
 
 @app.on_event("startup")

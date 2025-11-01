@@ -71,12 +71,51 @@ export const videoService = {
     return data;
   },
 
+  // Extração de áudio (Fase 3A)
+  async extractAudio(id: number): Promise<void> {
+    await api.post(`/videos/${id}/extract-audio`);
+  },
+
+  async getAudioProgress(id: number): Promise<{ video_id: number; status: string; progress: number; error: string | null }> {
+    const { data } = await api.get(`/videos/${id}/audio-progress`);
+    return data;
+  },
+
+  async reviewAudio(id: number): Promise<Video> {
+    const { data } = await api.post(`/videos/${id}/review-audio`);
+    return data;
+  },
+
+  // Transcrição
+  async transcribe(id: number): Promise<void> {
+    await api.post(`/videos/${id}/transcribe`);
+  },
+
+  async getTranscriptionProgress(id: number): Promise<{ video_id: number; status: string; progress: number; error: string | null }> {
+    const { data } = await api.get(`/videos/${id}/transcription-progress`);
+    return data;
+  },
+
+  async getTranscript(id: number): Promise<{ segments: Array<{ start: number; end: number; text: string }> }> {
+    const { data } = await api.get(`/videos/${id}/transcript`);
+    return data;
+  },
+
+  async updateTranscript(id: number, transcript: { segments: Array<{ start: number; end: number; text: string }> }): Promise<void> {
+    await api.put(`/videos/${id}/transcript`, transcript);
+  },
+
+  async reviewTranscription(id: number): Promise<Video> {
+    const { data } = await api.post(`/videos/${id}/review-transcription`);
+    return data;
+  },
+
   // URL para streaming do vídeo
   getStreamUrl(id: number): string {
     return `${api.defaults.baseURL}/videos/${id}/stream`;
   },
 
-  // Iniciar transcrição
+  // Iniciar transcrição (deprecated - use transcribe)
   async startTranscription(id: number): Promise<void> {
     await api.post(`/videos/${id}/transcribe`);
   },

@@ -10,7 +10,12 @@ class VideoStatus(enum.Enum):
     downloaded = "downloaded"
     download_failed = "download_failed"
     
-    # Fase 2: Transcrição
+    # Fase 3A: Extração de Áudio
+    extracting_audio = "extracting_audio"
+    audio_extracted = "audio_extracted"
+    audio_extraction_failed = "audio_extraction_failed"
+    
+    # Fase 3B: Transcrição
     transcribing = "transcribing"
     transcribed = "transcribed"
     transcription_failed = "transcription_failed"
@@ -77,15 +82,25 @@ class Video(Base):
     download_progress = Column(Float, default=0.0)  # 0-100
     download_error = Column(Text)
     
+    # Audio extraction (Fase 3A)
+    audio_extraction_progress = Column(Float, default=0.0)
+    audio_extraction_error = Column(Text)
+    
+    # Transcription (Fase 3B)
+    transcription_progress = Column(Float, default=0.0)
+    transcription_error = Column(Text)
+    
     # Processing timestamps
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
     downloaded_at = Column(DateTime)
+    extracted_at = Column(DateTime)
     transcribed_at = Column(DateTime)
     analyzed_at = Column(DateTime)
     
     # Auditoria - Review de cada etapa pelo usuário
     download_reviewed_at = Column(DateTime)  # Usuário confirmou que download está OK
+    audio_reviewed_at = Column(DateTime)  # Usuário confirmou que áudio está OK
     transcription_reviewed_at = Column(DateTime)  # Usuário revisou e aprovou transcrição
     highlights_reviewed_at = Column(DateTime)  # Usuário revisou e aprovou highlights
     cutting_reviewed_at = Column(DateTime)  # Usuário revisou clipes cortados

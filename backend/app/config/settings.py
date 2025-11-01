@@ -5,7 +5,7 @@ from pathlib import Path
 
 class Settings(BaseSettings):
     # Database
-    DATABASE_URL: str = "sqlite:///./autohighlights.db"  # SQLite por padrão, pode mudar para PostgreSQL
+    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/autohighlights"
     
     # API
     API_V1_STR: str = "/api"
@@ -33,8 +33,9 @@ class Settings(BaseSettings):
     BACKEND_CORS_ORIGINS: list = ["http://localhost:3000", "http://localhost:3001"]
     
     class Config:
-        env_file = str(Path(__file__).parent.parent.parent.parent / ".env")
+        env_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env")
+        env_file_encoding = "utf-8"
         case_sensitive = True
-        extra = "ignore"  # Ignorar campos extras do .env
+        extra = "ignore"
 
 settings = Settings()
